@@ -23,8 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'secret_key'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.name == 'nt')  # Run in debug mode if running on Windows.
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
