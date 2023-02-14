@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-lg">
+    <div class="mb-3 mx-auto w-25">
+        {% include 'svg/undraw_smartwatch_re_59lx.svg' %}
+    </div>
+    <h1 class="display-6 text-center my-3">Please Wait</h1>
+    <p>You are seeing this message because you have recently generated a route.</p>
+    <p>Unfortunately, we must limit each person to one route per ten minutes. This is done to prevent bots from farming of our services and wasting API calls reserved for our users.</p>
+    <p>We are sorry for any inconvenience this may cause. Please feel free to refresh the page and try again in a few minutes.</p>
+    <p>Thank you.</p>
+</div>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-lg">
+    <section class="mb-5">
+        <h1>Our Goal</h1>
+        <p class="">There are many situations in life where people want to travel in the least distance possible. Whether that be a business making delivieries, a vacationing family driving through the country, or the average person running today's errands. They all would want to drive in the least-costly way they can to maximize their productivity. However, it is not always easy to pick out the best route at a glance -- especially so when you cannot visualize the distances between multiple locations or are unfamiliar with the area.</p>
+        <p class="">This is where we can help! What we do is accept a list of written addresses, each representing one stop in an overall route, and reorder that list so that the total distance traveled is minimized. Within minutes, you will have an organized route that you can enter into your favorite navigation app. No hassle required!</p>
+    </section>
+
+    <section class="mb-5">
+        <div id="index_carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="15000">
+                    <div class="d-block mx-auto p-3">
+                        <img class="" src="{% static 'images/svg/undraw_connected_world_wuay.svg' %}" alt="Global Navigation">
+                        <h2 class="display-6 text-center mt-3">Take Advantage of Near-Global Coverage</h2>
+                        <p class="lead text-center">Thanks to TrueWay and their global road network data, fantastic results are available to you no matter where you are.</p>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="15000">
+                    <div class="d-block mx-auto p-3">
+                        <img class="" src="{% static 'images/svg/undraw_navigator_car.svg' %}" alt="Global Navigation">
+                        <h2 class="display-6 text-center mt-3">Navigate With Confidence</h2>
+                        <p class="lead text-center">Your time is valuable, so save it by using more efficient routes between your destinations.</p>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="15000">
+                    <div class="d-block mx-auto p-3">
+                        <img class="" src="{% static 'images/svg/undraw_map_dark_re_36sy.svg' %}" alt="Global Navigation">
+                        <h2 class="display-6 text-center mt-3">Visualize Your Route</h2>
+                        <p class="lead text-center">See each step along your journey with the help of Google Maps.</p>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="15000">
+                    <div class="d-block mx-auto p-3">
+                        <img class="" src="{% static 'images/svg/undraw_share_link_re_54rx.svg' %}" alt="Share Your Route">
+                        <h2 class="display-6 text-center mt-3">Keep Others Informed</h2>
+                        <p class="lead text-center">Want to let someone know the route you are taking? Share its link to share your route.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#index_carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#index_carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!--
+        <section class="mb-5">
+            <h1>Lorem, ipsum dolor.</h1>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae eaque dolorum deserunt, saepe molestias, commodi qui culpa maiores quam laboriosam labore dolorem a ex expedita voluptate atque, suscipit itaque accusantium illum omnis. Impedit maiores doloribus, harum possimus quia temporibus nihil dignissimos ipsa corporis quasi earum id provident esse culpa. Accusantium.</p>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi perspiciatis sed iure suscipit praesentium ea? Esse vitae maiores reprehenderit dicta doloremque sapiente omnis dignissimos! Eos facere assumenda ducimus at dolore vel consectetur obcaecati animi necessitatibus perspiciatis, non nemo ipsam excepturi! Repellendus tempore sit porro, ducimus quod fuga dolor vel exercitationem!</p>
+        </section>
+    -->
+</div>
+
+{% endblock content %}

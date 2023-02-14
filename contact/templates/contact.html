@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-2">
+    <h1>Contact</h1>
+    <p>We appreciate you reaching out to us. Any messages you leave here will be saved to our database for later review.</p>
+    <p>Please do not enter any personal information in your messages, such as home addresses or contact information.</p>
+    <p>Thank you for your feedback!</p>
+    <form action="{% url 'contact' %}" method="post" class="card px-3 pb-3 br-10px">
+        {% csrf_token %}
+        {{ message_form.non_field_errors }}
+        <div class="my-2">
+            <label for="id_subject" class="form-label">Subject</label>
+            {% if message_form.subject.errors %}
+            <div class="lead fw-bold text-warning">
+                {{ message_form.subject.errors }}
+            </div>
+            {% endif %}
+            {{ message_form.subject }}
+        </div>
+        <div class="my-2">
+            <label for="id_reason" class="form-label">Reason for message</label>
+            {{ message_form.reason.errors }}
+            {{ message_form.reason }}
+        </div>
+        <div class="my-2">
+            <label for="id_message" class="form-label">Message</label>
+            {{ message_form.message.errors }}
+            {{ message_form.message }}
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Send Message</button>
+    </form>
+</div>
+{% endblock content %}
+
+
+

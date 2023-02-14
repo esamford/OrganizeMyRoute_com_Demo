@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block js_header %}
+<script src="{% static 'js/process_route.js' %}" defer></script>
+{% endblock js_header %}
+
+
+{% block content %}
+<form id="routing_form" class="container">
+    <input id="jwt" type="hidden" name="token" value="{{ token }}">
+    <div class="row mb-4">
+        <div id="form_places_start" class="mb-4 col-lg-6 col-sm-12">
+            <p class="lead mb-2 ms-1">Starting location</p>
+            <div class="row">
+                <div class="place-card col-12 px-3">
+                    <div class="place-input-container border rounded p-2 card">
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 mt-2">
+                <input id="checkbox_start_is_stop" type="checkbox" class="form-check-input ms-1" name="start_is_stop" onchange="start_checkbutton_changed(this);"></input>
+                <label class="form-check-label" for="checkbox_start_is_stop">My route ends where it started.</label>
+            </div>
+        </div>
+        <div id="form_places_end" class="mb-4 col-lg-6 col-sm-12">
+            <p class="lead mb-2 ms-1">Final stop</p>
+            <div class="row">
+                <div class="place-card col-12 px-3">
+                    <div class="place-input-container border rounded p-2 card">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="form_places_intermediate" class="mb-4">
+        <p class="lead mb-2 ms-1">Intermediate stops</p>
+        <div id="intermediate_stops" class="row">
+            {# Intermediate stops are added automatically with jQuery. #}
+        </div>
+        <div class="row mt-2">
+            <div class="col-12 my-2">
+                <button type="button" class="btn btn-primary w-100" onclick="add_intermediate_place_card()">Add stop</button>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="col-12 my-2">
+            <button type="submit" class="btn btn-success w-100">Organize my route</button>
+        </div>
+    </div>
+
+    <script>
+        function start_checkbutton_changed() {
+            var is_checked = document.querySelector("#checkbox_start_is_stop").checked;
+            $("#form_places_end input").each(function() {
+                $(this).prop('disabled', is_checked);
+                $(this).prop('required', !is_checked);
+            });
+        }
+
+        let id_counter = 0;
+        function fill_place_card(place_card, place_type) {
+            id_counter += 1;
+
+            // TODO: Add "required" to all inputs here so the form checks for that before submitting.
+            var html =
+                    `
+                    <div class="mb-2 mx-2">
+                        <label for="street_addr_${id_counter}" class="form-label">Street address</label>
+                        <input id="street_addr_${id_counter}" type="text" class="form-control" name="street">
+                    </div>
+                    <div class="mb-2 mx-2 row">
+                        <div class="col-lg-5 col-12 ps-lg-0 pe-lg-1 px-0">
+                            <label for="city_${id_counter}" class="form-label">City</label>
+                            <input id="city_${id_counter}" type="text" class="form-control mt-auto" name="city">
+                        </div>
+                        <div class="col-lg-4 col-12 px-lg-1 px-0">
+                            <label for="state_${id_counter}" class="form-label">State / province</label>
+                            <input id="state_${id_counter}" type="text" class="form-control" name="state">
+                        </div>
+                        <div class="col-lg-3 col-12 ps-lg-1 pe-lg-0 px-0">
+                            <label for="postal_code_${id_counter}" class="form-label">Postal code</label>
+                            <input id="postal_code_${id_counter}" type="text" class="form-control" name="postal_code">
+                        </div>
+                    </div>
+                    <div class="mb-2 mx-2">
+                        <label for="country_${id_counter}" class="form-label">Country</label>
+                        <input id="country_${id_counter}" type="text" class="form-control" name="country">
+                    </div>
+                    `;
+            if (place_type == "intermediate") {
+                html =
+                `
+                <div class="d-flex flex-row-reverse">
+                    <div onclick="remove_place_card(this);">
+                        {% include 'svg/close_x_circle.html' %}
+                    </div>
+                </div>
+                ` + html;
+            }
+            $(place_card).children('.place-input-container').first().append(html);
+        };
+
+        function add_intermediate_place_card() {
+            if ($("#intermediate_stops .place-card").length < 20) {
+                $("#intermediate_stops").append(
+                    `
+                    <div class="place-card col-lg-6 col-sm-12 px-3 mb-3">
+                        <div class="place-input-container border rounded p-2 card">
+                        </div>
+                    </div>
+                    `
+                );
+                var place_card = $("#intermediate_stops").children('.place-card').last();
+                fill_place_card(place_card, "intermediate");
+                place_card.fadeOut(0).fadeIn(500);
+            }
+            else {
+                // TODO: Put this in a Bootstrap modal.
+                alert("Cannot create more than 20 intermediate stops.");
+            }
+        }
+
+        function remove_place_card(close_button) {
+            // Navigate up to where the nearest ".place-card" parent is and delete it.
+            var place_card = $(close_button).closest(".place-card");
+            $(place_card).fadeOut(500, function() { $(this).remove(); });
+        }
+
+        $(document).ready(function() {
+            // Add the default cards.
+            add_intermediate_place_card();
+            add_intermediate_place_card();
+            document.querySelectorAll("#form_places_start .place-card").forEach(place_card => {
+                fill_place_card(place_card, "start");
+            });
+            document.querySelectorAll("#form_places_end .place-card").forEach(place_card => {
+                fill_place_card(place_card, null);
+            });
+
+            // In case the above code runs after checking the "start == end" checkbutton,
+            // update the end place card's inputs to match the checkbutton.
+            start_checkbutton_changed();
+        });
+    </script>
+
+
+</form>
+{% endblock content %}

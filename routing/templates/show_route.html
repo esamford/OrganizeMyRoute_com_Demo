@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+<div class="container-lg">
+    {# Overall route data #}
+    <section class="mb-5 p-4 card border border-1 rounded rounded-3 media-print-no-page-break-inside">
+        <div class="row justify-content-start px-2">
+            <h2 class="my-0 px-0 display-6">Route Summary</h2>
+            <div class="col-12 col-lg-6 mb-2 mb-lg-0">
+                {# Google Maps directions #}
+                <div class="row justify-content-center sticky-top pt-lg-4 mt-lg-0 mt-2">
+                    <div class="col-auto ratio ratio-4x3">
+                        {% with route.get_gmaps_embed_src as src_url %}
+                        {% include 'iframe_google_maps_directions.html' %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            {# Route info #}
+            <div class="col-12 col-lg-6 px-0 ps-lg-3 media-print-no-page-break-inside d-flex flex-column justify-content-between">
+                <table class="table table-striped table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Step</th>
+                            <th scope="col">Travel Time</th>
+                            <th scope="col">Distance (mi)</th>
+                            <th scope="col">Distance (km)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rac in route.get_route_address_connections %}
+                        {% with rac.address_connection as address_connection %}
+                        <tr>
+                            <td></td>
+                            <td>{{ rac.get_step_num }}</td>
+                            <td>{{ address_connection.get_travel_time_string }}</td>
+                            <td>{{ address_connection.get_distance_miles|intcomma }}</td>
+                            <td>{{ address_connection.get_distance_km|intcomma }}</td>
+                        </tr>
+                        {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="col">Total</th>
+                            <td scope="col"></td>
+                            <td scope="col">{{ route.get_total_travel_time_string }}</td>
+                            <td scope="col">{{ route.get_total_distance_miles|intcomma }}</td>
+                            <td scope="col">{{ route.get_total_distance_km|intcomma }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    {# <h1 class="mt-5 mb-3 display-5 text-center media-print-break-page">Individual Steps</h1> #}
+    {% for rac in route.get_route_address_connections %}
+    {% with rac.address_connection as address_connection %}
+    <section class="mb-3 p-4 card border border-1 rounded rounded-3 media-print-no-page-break-inside">
+        <div class="row justify-content-start px-2">
+            <div class="col-12 col-lg-6 mb-2 mb-lg-0">
+                {# Google Maps directions #}
+                <div class="row justify-content-center">
+                    <div class="col-auto ratio ratio-4x3">
+                        {% with address_connection.get_gmaps_embed_src as src_url %}
+                        {% include 'iframe_google_maps_directions.html' %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 px-0 ps-lg-3">
+                <h2 class="mt-3 mt-lg-0 display-6">Step {{ rac.get_step_num }}</h2>
+                {# From and to addresses #}
+                <div class="row justify-content-between mb-2">
+                    <div class="col-12">
+                        <p class="mb-0 fw-normal">{{ address_connection.from_address.get_addr_line_1 }}</p>
+                        <p class="mb-0 fw-normal">{{ address_connection.from_address.get_addr_line_2 }}</p>
+                        <p class="mb-0 fw-normal">{{ address_connection.from_address.get_addr_line_3 }}</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex h-100 py-2 justify-content-center align-items-center">
+                            {% include 'svg/arrow-down.html' %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-0 fw-normal">{{ address_connection.to_address.get_addr_line_1 }}</p>
+                        <p class="mb-0 fw-normal">{{ address_connection.to_address.get_addr_line_2 }}</p>
+                        <p class="mb-0 fw-normal">{{ address_connection.to_address.get_addr_line_3 }}</p>
+                    </div>
+                </div>
+                {# Estimated travel info #}
+                <div class="mt-4">
+                    <p class="mb-0">Estimated travel time: {{ address_connection.get_travel_time_string }}</p>
+                    <p class="mb-0">Estimated travel distance: {{ address_connection.get_distance_miles|intcomma }} miles ({{ address_connection.get_distance_km|intcomma }} kilometers)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endwith %}
+    {% endfor %}
+
+    <div id="print_btn_container" class="mt-5">
+        <button class="btn btn-success w-100" onclick="window.print();">Print</button>
+        <small class="text-center d-none">Printing capabilities are unavailable on Android devices.</small>
+
+        {# Android cannot print to PDF. Remove the button if the user is using Android. #}
+        <script>
+            $(document).ready(function() {
+                // https://stackoverflow.com/a/28895773
+                var ua = navigator.userAgent.toLowerCase();  // Get user agent.
+                var isAndroid = ua.indexOf("android") > -1;  // User agent contains "android".
+
+                if (isAndroid) {
+                    $("#print_btn_container > button").addClass("disabled");
+                    $("#print_btn_container > small").removeClass("d-none");
+                }
+            });
+        </script>
+    </div>
+
+    <div class="mt-2">
+        <small>
+            This route was last updated on {{ route.get_created_at_day_str }} (server time). Keep in mind that travel durations and distances may fluctuate over time.
+        </small>
+    </div>
+</div>
+{% endblock content %}
+
+

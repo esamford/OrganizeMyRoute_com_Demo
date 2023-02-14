@@ -1,0 +1,113 @@
+body {
+    min-height: 100%;
+    background-color: rgb(245, 242, 243);
+}
+
+.place-input-container {
+    /* background-color: rgb(112, 156, 129); */
+}
+
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+#index_carousel {
+    height: auto;
+}
+
+.carousel-item img {
+    margin: 0px auto;
+    min-height: 300px;
+    min-width: 300px;
+    width: auto;
+    height: auto;
+    max-height: 50vh;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.carousel-item > div {
+    width: 85%;
+}
+
+.media-print-only, .media-print-only * {
+    /* Only show elements with this class if printing. */
+    display: none;
+}
+@media print {
+    * {
+        font-family: 'Roboto Slab', serif;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    h4 {
+        font-size: 18px;
+    }
+
+    h5 {
+        font-size: 16px;
+    }
+
+    h6 {
+        font-size: 14px;
+    }
+
+    p:not(.lead), a {
+        font-size: 12px;
+    }
+
+    p.lead {
+        font-size: 16px;
+    }
+
+    small {
+        font-size: 10px;
+    }
+
+    .media-print-add-border {
+        border: 1px solid gray !important;
+    }
+
+    .media-print-d-none, .media-print-d-none * {
+        display: none !important;
+    }
+
+    .media-print-no-page-break-inside {
+        page-break-inside: avoid !important;
+    }
+
+    .media-print-break-page {
+        page-break-before: always !important;
+    }
+
+    .media-print-only, .media-print-only * {
+        /* Only show elements with this class if printing. */
+        display: block;
+    }
+
+    tfoot {
+        display: table-row-group;
+    }
+
+    .btn {
+        display: none !important;
+    }
+
+    #footer, #navbar, #footer *, #navbar * {
+        display: none !important;
+    }
+}
